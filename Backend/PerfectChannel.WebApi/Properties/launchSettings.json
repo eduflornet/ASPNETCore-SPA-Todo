@@ -1,18 +1,18 @@
-﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50454",
+      "applicationUrl": "http://localhost:50123",
       "sslPort": 0
     }
   },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/task",
+      "launchUrl": "api/todo",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,11 +20,11 @@
     "PerfectChannel.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/task",
-      "applicationUrl": "http://localhost:5000",
+      "launchUrl": "api/todo",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

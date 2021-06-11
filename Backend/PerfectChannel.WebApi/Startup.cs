@@ -1,8 +1,11 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PerfectChannel.WebApi.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PerfectChannel.WebApi
 {
@@ -19,7 +22,11 @@ namespace PerfectChannel.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoApp"));
+            services.AddScoped<ITodosRepository, TodosRepository>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
             ConfigureCors(services);
         }
 
