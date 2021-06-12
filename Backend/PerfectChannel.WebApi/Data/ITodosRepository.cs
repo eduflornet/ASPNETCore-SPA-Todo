@@ -8,6 +8,7 @@ namespace PerfectChannel.WebApi.Data
         Task<Todo[]> GetByStatus(bool isDone);
         Task<Todo> Insert(Todo todo);
         Task<Todo> GetById(int id);
+        Task<bool> Update(Todo todo);
 
     }
 }

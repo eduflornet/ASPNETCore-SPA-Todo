@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -59,7 +60,7 @@ namespace PerfectChannel.WebApi.Test.Controllers
             controller.ModelState.AddModelError("error", "some error");
 
             // Act
-            var result = controller.CreateTodo(todo: null);
+            var result = controller.CreateTodo(todoModel: null);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
@@ -69,24 +70,47 @@ namespace PerfectChannel.WebApi.Test.Controllers
         public void Create_ReturnsCreatedTodo_GivenCorrectInputs()
         {
             // Arrange
-            const string description = "Test One";
-            const bool isDone = false;
-            var todoModel = new TodoModel()
-            {
-                Description = description,
-                IsDone = isDone
-            };
             var mockRepo = new Mock<ITodosRepository>();
             var controller = new TodoController(mockRepo.Object, GetMapper());
 
             // Act
-            var result = controller.CreateTodo(todoModel);
+            var result = controller.CreateTodo(GetTodoModel());
 
             // Assert
             var okResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
             var returnTodo = Assert.IsType<TodoModel>(okResult.Value);
-            Assert.Equal(description, returnTodo.Description);
-            Assert.Equal(isDone, returnTodo.IsDone);
+            Assert.Equal(GetTodoModel().Description, returnTodo.Description);
+            Assert.Equal(GetTodoModel().IsDone, returnTodo.IsDone);
+        }
+
+        [Fact]
+        public void Update_ReturnsBadRequest_GivenNullModel()
+        {
+            // Arrange
+            var mockRepo = new Mock<ITodosRepository>();
+            var controller = new TodoController(mockRepo.Object,GetMapper());
+            controller.ModelState.AddModelError("error", "some error");
+
+            // Act
+            var result = controller.UpdateTodo(null);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public void Update_ReturnsHttpNotFound_ForInvalidId()
+        {
+            // Arrange
+            var todoModel = GetTodoModel();
+            todoModel.Id = 123;
+            var mockRepo = new Mock<ITodosRepository>();
+            var controller = new TodoController(mockRepo.Object, GetMapper());
+            // Act
+            var result = controller.UpdateTodo(todoModel);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         private static IMapper GetMapper()
@@ -99,6 +123,14 @@ namespace PerfectChannel.WebApi.Test.Controllers
             return mapper;
         }
 
+        private static TodoModel GetTodoModel()
+        {
+            return new TodoModel()
+            {
+                Description = "Test One",
+                IsDone = false
+            };
+        }
 
         private static async Task<Todo[]> GetCompletedTodos()
         {

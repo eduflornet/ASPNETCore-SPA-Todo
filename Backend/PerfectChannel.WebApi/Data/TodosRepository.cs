@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using PerfectChannel.WebApi.Data.Entities;
 
 namespace PerfectChannel.WebApi.Data
 {
-    public class TodosRepository: ITodosRepository
+    public class TodosRepository : ITodosRepository
     {
         private readonly TodoContext _context;
         private readonly ILogger _logger;
@@ -42,6 +41,22 @@ namespace PerfectChannel.WebApi.Data
         public Task<Todo> GetById(int id)
         {
             return _context.Todos.FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public async Task<bool> Update(Todo todo)
+        {
+            _context.Todos.Attach(todo);
+            _context.Entry(todo).State = EntityState.Modified;
+            try
+            {
+                return await _context.SaveChangesAsync() > 0 ? true : false;
+            }
+            catch (Exception exp)
+            {
+                _logger.LogError($"Error in {nameof(Update)}: " + exp.Message);
+            }
+
+            return false;
         }
     }
 }

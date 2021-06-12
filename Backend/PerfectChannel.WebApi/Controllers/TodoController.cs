@@ -60,7 +60,7 @@ namespace PerfectChannel.WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<ActionResult> CreateTodo([FromBody] TodoModel todo)
+        public async Task<ActionResult> CreateTodo([FromBody] TodoModel todoModel)
         {
             if (!ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace PerfectChannel.WebApi.Controllers
 
             try
             {
-                var todoEntity = _mapper.Map<Todo>(todo);
+                var todoEntity = _mapper.Map<Todo>(todoModel);
                 var newTodo = await _todosRepository.Insert(todoEntity);
                 var newTodoModel = _mapper.Map<TodoModel>(newTodo);
                 if (newTodoModel == null)
@@ -87,7 +87,7 @@ namespace PerfectChannel.WebApi.Controllers
 
         
         [HttpGet("{id}", Name = "GetTodoRoute")]
-        [ProducesResponseType(typeof(Todo), 200)]
+        [ProducesResponseType(typeof(TodoModel), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<ActionResult> GetTodo(int id)
         {
@@ -101,7 +101,36 @@ namespace PerfectChannel.WebApi.Controllers
                 return BadRequest(new ApiResponse { Status = false, Message = exp.Message});
             }
         }
-        
+
+
+        [HttpPut]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> UpdateTodo([FromBody] TodoModel todoModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse { Status = false, ModelState = ModelState });
+            }
+
+            try
+            {
+                var todoEntity = _mapper.Map<Todo>(todoModel);
+                var status = await _todosRepository.Update(todoEntity);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true, Todo = todoModel });
+            }
+            catch (Exception exp)
+            {
+                return BadRequest(new ApiResponse { Status = false, Message = exp.Message});
+            }
+        }
+
+
+
 
     }
 }
