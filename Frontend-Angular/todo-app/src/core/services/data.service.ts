@@ -1,0 +1,48 @@
+import { ITodo } from '../models/todo.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DataService {
+
+  baseUrl = environment.apiUrl;
+  baseTodoUrl = this.baseUrl + 'todo';
+
+  constructor(private http: HttpClient) { }
+
+  public async getPendingTodos(): Promise<ITodo[]> {
+    return this.http.get<ITodo[]>(`${this.baseTodoUrl}/pending`)
+      .pipe(
+        map(pendingTodos => {
+          return pendingTodos;
+        }),
+        catchError(this.handleError)
+      ).toPromise();
+  }
+
+  public async getCompletedTodos(): Promise<ITodo[]> {
+    return this.http.get<ITodo[]>(`${this.baseTodoUrl}/completed`)
+      .pipe(
+        map(completedTodos => {
+          return completedTodos;
+        }),
+        catchError(this.handleError)
+      ).toPromise();
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('server error:', error);
+    if (error.error instanceof Error) {
+      let errMessage = error.error.message;
+      return Observable.throw(errMessage);
+    }
+    return Observable.throw(error || 'ASP.NET Core server error');
+  }
+
+
+}
