@@ -3,3 +3,10 @@ export interface ITodo {
   description: string;
   isDone: boolean;
 }
+
+export interface ITodoResponse {
+  status: boolean;
+  todo: ITodo;
+}
+
+

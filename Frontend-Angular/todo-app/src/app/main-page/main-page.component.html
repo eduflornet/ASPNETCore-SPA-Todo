@@ -1,41 +1,59 @@
 <div class="container">
-  <div class="addTask">
-    <input type="text" placeholder="Add a Task">
-    <button>Add</button>
+  <form [formGroup]="todoForm">
+    <div class="addTask">
+      <input type="text" placeholder="Description (required)" id="description" class="form-control"
+        formControlName="description" required>
+
+      <button class="btn btn-outline-secondary btn-sm" type="button" title="Add task" (click)="onAdd()">
+        Add
+      </button>
+    </div>
+  </form>
+
+
+  <div *ngIf="pendingTodos.length>0">
+
+    <ol class="notCompleted">
+      <h3>Not Completed</h3>
+
+
+      <div style="margin:5px 0px">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let item of pendingTodos">
+            <span class="hover-cursor" [class.text-success]="item.isDone">
+              <i class="fa fa-lg" [ngClass]="item.isDone?'fa-check-circle-o':'fa-circle-thin'"></i>
+            </span>
+            {{item.description}}
+            <span class="hover-cursor text-danger pull-right">
+            </span>
+          </li>
+        </ul>
+      </div>
+    </ol>
+
+
   </div>
 
-  <ol class="notCompleted">
-    <h3>Not Completed</h3>
+  <div *ngIf="completedTodos.length>0">
+    <ol class="Completed">
+      <h3>Completed</h3>
+
+      <div style="margin:5px 0px">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let item of completedTodos">
+            <span class="hover-cursor" [class.text-success]="item.isDone">
+              <i class="fa fa-lg" [ngClass]="item.isDone?'fa-check-circle-o':'fa-circle-thin'"></i>
+            </span>
+            {{item.description}}
+            <span class="hover-cursor text-danger pull-right">
+            </span>
+          </li>
+        </ul>
+      </div>
+    </ol>
+
+  </div>
 
 
-    <div style="margin:5px 0px">
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let item of pendingTodos">
-          <span class="hover-cursor" [class.text-success]="item.isDone">
-            <i class="fa fa-lg" [ngClass]="item.isDone?'fa-check-circle-o':'fa-circle-thin'"></i>
-          </span>
-          {{item.description}}
-          <span class="hover-cursor text-danger pull-right">
-          </span>
-        </li>
-      </ul>
-    </div>
-  </ol>
 
-  <ol class="Completed">
-    <h3>Completed</h3>
-
-    <div style="margin:5px 0px">
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let item of completedTodos">
-          <span class="hover-cursor" [class.text-success]="item.isDone">
-            <i class="fa fa-lg" [ngClass]="item.isDone?'fa-check-circle-o':'fa-circle-thin'"></i>
-          </span>
-          {{item.description}}
-          <span class="hover-cursor text-danger pull-right">
-          </span>
-        </li>
-      </ul>
-    </div>
-  </ol>
 </div>

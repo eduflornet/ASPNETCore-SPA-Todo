@@ -1,9 +1,9 @@
-import { ITodo } from '../models/todo.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { ITodo, ITodoResponse } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,18 @@ export class DataService {
         catchError(this.handleError)
       ).toPromise();
   }
+
+  public async insertTodo(todo: ITodo): Promise<ITodo> {
+    return this.http.post<ITodoResponse>(this.baseTodoUrl, todo)
+      .pipe(
+        map((data) => {
+          return data.todo;
+        }),
+        catchError(this.handleError)
+      ).toPromise();
+  }
+
+
 
   private handleError(error: HttpErrorResponse) {
     console.error('server error:', error);
