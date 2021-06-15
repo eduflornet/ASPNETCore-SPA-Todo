@@ -11,7 +11,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class MainPageComponent implements OnInit {
   pendingTodos: ITodo[] = [];
   completedTodos: ITodo[] = [];
-  
+
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
 
@@ -38,10 +38,9 @@ export class MainPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.getPendingTodos();
+    this.getCompletedTodos();
   }
-
-
 
   onAdd(): void {
     if (this.todoForm.valid) {
@@ -55,6 +54,38 @@ export class MainPageComponent implements OnInit {
         },
           (err: any) => console.log(err));
     }
+
+  }
+
+  onCheck(id: number): void {
+    console.log("id:"+id);
+    const index = this.pendingTodos.findIndex(x => x.id === id);
+    console.log("index:"+index);
+    let todo = this.pendingTodos[index];
+    console.log("todo:"+JSON.stringify(todo));
+    todo.isDone = true;
+    this.dataService.updatedTodo(todo).then((todo: ITodo) => {
+      if (todo) {
+        this.pendingTodos.splice(index);
+        this.getPendingTodos();
+      }
+    },
+      (err: any) => console.log(err));
+
+  }
+
+  unCheck(id: number): void {
+    const index = this.completedTodos.findIndex(x => x.id === id);
+    let todo = this.completedTodos[index];
+    todo.isDone = false;
+    this.dataService.updatedTodo(todo).then((todo: ITodo) => {
+      if (todo) {
+        this.completedTodos.splice(index);
+        this.getPendingTodos();
+        this.getCompletedTodos();
+      }
+    },
+      (err: any) => console.log(err));
 
   }
 

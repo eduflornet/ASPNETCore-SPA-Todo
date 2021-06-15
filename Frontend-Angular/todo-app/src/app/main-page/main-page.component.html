@@ -20,7 +20,7 @@
       <div style="margin:5px 0px">
         <ul class="list-group">
           <li class="list-group-item" *ngFor="let item of pendingTodos">
-            <span class="hover-cursor" [class.text-success]="item.isDone">
+            <span class="hover-cursor" [class.text-success]="item.isDone" (click)="onCheck(item.id)">
               <i class="fa fa-lg" [ngClass]="item.isDone?'fa-check-circle-o':'fa-circle-thin'"></i>
             </span>
             {{item.description}}
@@ -41,7 +41,7 @@
       <div style="margin:5px 0px">
         <ul class="list-group">
           <li class="list-group-item" *ngFor="let item of completedTodos">
-            <span class="hover-cursor" [class.text-success]="item.isDone">
+            <span class="hover-cursor" [class.text-success]="item.isDone"(click)="unCheck(item.id)">
               <i class="fa fa-lg" [ngClass]="item.isDone?'fa-check-circle-o':'fa-circle-thin'"></i>
             </span>
             {{item.description}}

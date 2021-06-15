@@ -45,6 +45,17 @@ export class DataService {
       ).toPromise();
   }
 
+  public async updatedTodo(todo: ITodo): Promise<ITodo> {
+    return this.http.put<ITodoResponse>(this.baseTodoUrl, todo)
+      .pipe(
+        map((data) => {
+          console.log('updatedTodo status: ' + data.status);
+          return data.todo;
+        }),
+        catchError(this.handleError)
+      ).toPromise();
+  }
+
 
 
   private handleError(error: HttpErrorResponse) {
