@@ -5,12 +5,18 @@ I was working at times every day, and I think that in total between backend and 
 
 ## How do you build and run your solution?
 For backend with the following commands:
+
+For the API, switch to directory: PerfectChannel.WebApi
 Dotnet build
 Dotnet run
+
+For the test, switch to directory: PerfectChannel.WebApi.Test
+Dotnet test
+
 For the frontend part with the following commands:
 npm run build
 npm start
-
+npm test
 ## What technical and functional assumptions did you make when implementing your solution?
 I do not understand the question very well, but this solution is based at a functional level on all user stories, and for the implementation I have based on the technical requirements, and above all on what is expected as a result. As a result I assumed a UX design with the minimal and tight functionality required.
 
