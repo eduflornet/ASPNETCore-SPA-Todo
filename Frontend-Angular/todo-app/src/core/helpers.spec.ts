@@ -8,29 +8,27 @@ export const mockPendingTodos = [
     "id": 2,
     "description": "Task Two",
     "isDone": false
-  },
-  {
-    "id": 3,
-    "description": "Task Three",
-    "isDone": false
   }
+
 
   ]
 
 export const mockCompletedTodos = [
 {
+    "id": 3,
+    "description": "Task Three",
+    "isDone": true
+  },
+  {
     "id": 4,
     "description": "Task Four",
     "isDone": true
-  },
-  {
-    "id": 5,
-    "description": "Task Five",
-    "isDone": true
-  },
-  {
-    "id": 6,
-    "description": "Task Six",
-    "isDone": true
-  },
+  }
+
 ]
+
+export const mockTodo = {
+  id: 5,
+  description: "Task Five",
+  isDone: false
+}

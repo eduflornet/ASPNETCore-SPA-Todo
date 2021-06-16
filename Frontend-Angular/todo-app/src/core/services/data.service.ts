@@ -49,7 +49,6 @@ export class DataService {
     return this.http.put<ITodoResponse>(this.baseTodoUrl, todo)
       .pipe(
         map((data) => {
-          console.log('updatedTodo status: ' + data.status);
           return data.todo;
         }),
         catchError(this.handleError)

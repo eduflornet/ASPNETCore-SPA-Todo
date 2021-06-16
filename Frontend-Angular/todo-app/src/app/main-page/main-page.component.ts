@@ -58,11 +58,8 @@ export class MainPageComponent implements OnInit {
   }
 
   onCheck(id: number): void {
-    console.log("id:"+id);
     const index = this.pendingTodos.findIndex(x => x.id === id);
-    console.log("index:"+index);
     let todo = this.pendingTodos[index];
-    console.log("todo:"+JSON.stringify(todo));
     todo.isDone = true;
     this.dataService.updatedTodo(todo).then((todo: ITodo) => {
       if (todo) {
