@@ -6,6 +6,7 @@ import {
 import { DataService } from './data.service';
 import { mockCompletedTodos, mockPendingTodos, mockTodo } from '../helpers.spec';
 import { environment } from 'src/environments/environment';
+import { HttpResponse } from '@angular/common/http';
 
 describe('DataService', () => {
   let httpTestingController: HttpTestingController;
@@ -20,7 +21,7 @@ describe('DataService', () => {
     });
 
     httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(DataService);
+    service = TestBed.inject(DataService);
   });
 
   afterEach(() => {
@@ -54,6 +55,36 @@ describe('DataService', () => {
 
     req.flush(mockCompletedTodos);
   });
+
+    it('should insert or add an todo object and return it', () => {
+
+      service.insertTodo(mockTodo).then(
+        data => expect(data).toEqual(mockTodo, 'should return the mockTodo'),
+        fail
+      );
+
+      const req = httpTestingController.expectOne(baseTodoUrl);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual(mockTodo);
+
+      const expectedResponse = new HttpResponse({ status: 201, statusText: 'Created', body: mockTodo });
+      req.event(expectedResponse);
+    });
+
+    it('should update an todo object and return it', () => {
+
+      service.updatedTodo(mockTodo).then(
+        data => expect(data).toEqual(mockTodo, 'should return the mockTodo'),
+        fail
+      );
+
+      const req = httpTestingController.expectOne(baseTodoUrl);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual(mockTodo);
+
+      const expectedResponse = new HttpResponse({ status: 201, statusText: 'Updated', body: mockTodo });
+      req.event(expectedResponse);
+    });
 
 
 });
